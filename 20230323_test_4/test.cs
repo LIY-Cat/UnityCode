@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//깃허브 테스트
 
 public class Test : MonoBehaviour
 {
-    private float x = 3.0f;
-    private float y = 5.0f;
+    private float ix = 3.0f;
+    private float iy = 5.0f;
+    private Vector2 posxy;
+    
     void vector2_pos(){
         Vector2 playerPos = new Vector2(3.0f, 4.0f);
         playerPos.x += 8.0f;
@@ -16,17 +17,16 @@ public class Test : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //vector2_pos();
+        vector2_pos();
+        posxy = new Vector2(ix, iy);
     }
 
     // Update is called once per frame
     void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        Vector2 posxy = new Vector2(horizontalInput * x * Time.deltaTime,verticalInput * y * Time.deltaTime);
-        transform.position += posxy;
-        Debug.Log(transform.position);
+        posxy.x += ix;
+        posxy.y += iy;
+        Debug.Log(posxy);
 
     }
 }
