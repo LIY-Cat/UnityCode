@@ -20,7 +20,7 @@ public class PlayerCtrl : MonoBehaviour{
         private Rigidbody playerRigidbody;
         [SerializeField] private float jumpForce = 250.0f;
         [SerializeField] private float walkForce = 5.0f;
-        private GameObject scoreObject;
+        private GameObject scoreObject, gaugeObject, scrollbarObject;
         private int score = 0;
         private Text scoreText;
 
@@ -41,6 +41,10 @@ public class PlayerCtrl : MonoBehaviour{
         Vector3 temp = new Vector3(0, 0, 1);
         playerRigidbody.AddForce(temp.normalized * 0.1f);
         MeasureDistance("item");
+
+        gaugeObject = GameObject.Find("Gauge");
+        scrollbarObject = GameObject.Find("Scrollbar");
+
     }
 
     void Update(){
@@ -80,6 +84,8 @@ public class PlayerCtrl : MonoBehaviour{
         score += 10;
         if(score >= 0){
             scoreText.text = "Score: " + score.ToString();
+            gaugeObject.GetComponent<Image>().fillAmount += 0.1f;
+            scrollbarObject.GetComponent<Scrollbar>().size += 0.1f;
         }
         Debug.Log("이름: " + other.ToString());
         Destroy(other.gameObject);
@@ -143,6 +149,12 @@ public class PlayerCtrl : MonoBehaviour{
         /* *디버그 작업
         *Debug.Log("Move!");
         */
+    }
+    /*
+    TODO: 버튼을 누르시 왼쪽으로 이동하기 플레이어를
+    */
+    void RightMove_B(){
+
     }
 
     /*

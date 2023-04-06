@@ -321,6 +321,9 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/VSSettingsProvider.ref.dll"
+"Assets/ACAUTIL/ACARoundFill/Scripts/FillRound.cs"
+"Assets/ACAUTIL/ACARoundFill/Scripts/ImgsFillDynamic.cs"
+"Assets/ACAUTIL/ACARoundFill/Scripts/TestScript.cs"
 "Assets/Script/PlayerCtrl.cs"
 -langversion:8.0
 
