@@ -36,7 +36,14 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Script\Player\PlayerPresenter.cs" />
+     <Compile Include="Assets\Script\Player\PlayerModel.cs" />
+     <Compile Include="Assets\ACAUTIL\ACARoundFill\Scripts\TestScript.cs" />
+     <Compile Include="Assets\ACAUTIL\ACARoundFill\Scripts\FillRound.cs" />
      <Compile Include="Assets\Script\PlayerCtrl.cs" />
+     <Compile Include="Assets\Script\Player\PlayerView.cs" />
+     <Compile Include="Assets\Script\AutoDestroyParticleSystem.cs" />
+     <Compile Include="Assets\ACAUTIL\ACARoundFill\Scripts\ImgsFillDynamic.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.1.23f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

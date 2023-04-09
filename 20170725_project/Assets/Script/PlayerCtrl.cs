@@ -20,9 +20,12 @@ public class PlayerCtrl : MonoBehaviour{
         private Rigidbody playerRigidbody;
         [SerializeField] private float jumpForce = 250.0f;
         [SerializeField] private float walkForce = 5.0f;
-        private GameObject scoreObject, gaugeObject, scrollbarObject;
+        [SerializeField] private GameObject scoreObject, gaugeObject, scrollbarObject;
         private int score = 0;
         private Text scoreText;
+        private AudioSource audioSource;
+        public ParticleSystem exposion;
+
 
 
     /*
@@ -37,10 +40,14 @@ public class PlayerCtrl : MonoBehaviour{
     void Start(){
         playerRigidbody = GetComponent<Rigidbody>();
         scoreObject = GameObject.Find("Score");
+        audioSource = GetComponent<AudioSource>();
         scoreText = scoreObject.GetComponent<Text>();
+
+        /*
         Vector3 temp = new Vector3(0, 0, 1);
         playerRigidbody.AddForce(temp.normalized * 0.1f);
         MeasureDistance("item");
+        */
 
         gaugeObject = GameObject.Find("Gauge");
         scrollbarObject = GameObject.Find("Scrollbar");
@@ -49,15 +56,18 @@ public class PlayerCtrl : MonoBehaviour{
 
     void Update(){
         HandlePlayerMovement();
+        /*
         Vector3 temp = new Vector3(0, 0, 1);
         playerRigidbody.AddForce(temp.normalized * 0.1f);
         MeasureDistance("item (4)");
+        */
     }
 
     void FixedUpdate(){
-        //Vector3 temp = new Vector3(0, 0, 1);
-        //playerRigidbody.AddForce(temp.normalized * 0.1f);
-        //MeasureDistance("item (4)");
+        /*Vector3 temp = new Vector3(0, 0, 1);
+        *playerRigidbody.AddForce(temp.normalized * 0.1f);
+        *MeasureDistance("item (4)");
+        */
     }
 
     /*
@@ -87,6 +97,17 @@ public class PlayerCtrl : MonoBehaviour{
             gaugeObject.GetComponent<Image>().fillAmount += 0.1f;
             scrollbarObject.GetComponent<Scrollbar>().size += 0.1f;
         }
+        /*
+        *새로운 인스턴스를 만든다 왜냐하면은 파티클을 몇초뒤에 사리지게끔 구현 해놓았다.
+        *AutoDestroyParticleSystem.cs 파일 참조
+        *또한 prefab를 만들어서 만든 것을 exposion에 연결을 시킨다.
+        *코드에서 직접 연결을 할 필요는 없고 간편하게 유니티에서 지원하고 있다.
+        *만든이유: Hierarchy탭에 복제가 되어서 메모리,용량등 최적화 문제가 생긴다.
+        *Quaternion.identity : 회전문제로 인한 사용(제거해서 테스트 안함)
+        */
+        GameObject instantiatedParticles = Instantiate(exposion.gameObject, other.transform.position, Quaternion.identity);
+        instantiatedParticles.AddComponent<AutoDestroyParticleSystem>();
+        Debug.Log("파티클 생성");
         Debug.Log("이름: " + other.ToString());
         Destroy(other.gameObject);
     }
@@ -110,11 +131,22 @@ public class PlayerCtrl : MonoBehaviour{
         *점프
         */
         if(Input.GetKeyDown(KeyCode.Space) && playerRigidbody.velocity.y == 0.0f){
+            /*!audioSource.isPlaying: 재생이 안될때 true로 한다.*/
+            if(!audioSource.isPlaying){
+                audioSource.Play();
+                Debug.Log("점프 오디오 출력 완료");
+            }
             playerRigidbody.AddForce(transform.up * jumpForce);
         }
 
         Vector3 movement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         playerRigidbody.AddForce(movement.normalized * walkForce);
+        /*.magnitude는 백터크기를 나타낸다. !audioSource.isPlaying를 추가하여 다 재생이 될때까지 기달린다.*/
+        if(movement.magnitude != 0 && !audioSource.isPlaying){
+            audioSource.Play();
+            Debug.Log("이동 오디오 출력 완료");
+        }
+        
 
         /*
         Vector3 horizontalMovement = new Vector3(Input.GetAxisRaw("Horizontal"), 0, 0);//A, D or <, >;
