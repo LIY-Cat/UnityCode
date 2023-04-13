@@ -1,0 +1,25 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ArrowController : MonoBehaviour
+{  
+   
+    void Start()
+    {
+        
+    }
+
+    void Update()
+    {
+        // 프레임마다 등속으로 낙하시킨다
+        transform.Translate(0, -0.01f, 0);
+        
+        // 화면 밖으로 나오면 오브젝트를 삭제한다
+        if (transform.position.y < -5.0f)
+        {
+            Destroy(gameObject);
+        }
+
+    }
+}
