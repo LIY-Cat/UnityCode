@@ -56,11 +56,9 @@ public class PlayerCtrl : MonoBehaviour{
 
     void Update(){
         HandlePlayerMovement();
-        /*
-        Vector3 temp = new Vector3(0, 0, 1);
+        /*Vector3 temp = new Vector3(0, 0, 1);
         playerRigidbody.AddForce(temp.normalized * 0.1f);
-        MeasureDistance("item (4)");
-        */
+        MeasureDistance("item (4)");*/
     }
 
     void FixedUpdate(){
@@ -183,10 +181,22 @@ public class PlayerCtrl : MonoBehaviour{
         */
     }
     /*
-    TODO: 버튼을 누르시 왼쪽으로 이동하기 플레이어를
+    *버튼을 누르시 플레이어 이동
+    *transform.Translate 사용시 순간이동을 한다.
+    *백터사용을 하면은 자연스럽게 움직여진다.
     */
-    void RightMove_B(){
+    public void FButtonDown(){
+        Vector3 movement = new Vector3(0, 0, 1);
+        playerRigidbody.AddForce(movement.normalized * 150);
+        MeasureDistance("item (4)");
+        Debug.Log("FButtonDown");
+    }
 
+    public void BButtonDown(){
+        Vector3 movement = new Vector3(0, 0, -1);
+        playerRigidbody.AddForce(movement.normalized * 150);
+        MeasureDistance("item (4)");
+        Debug.Log("BButtonDown");
     }
 
     /*
