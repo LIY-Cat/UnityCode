@@ -10,7 +10,9 @@ namespace Randomxyznamespace{
         private float randomY = 0f;
         private float randomZ = 0f;
         private float randomForce = 0f;
-        //굳이 스크립트 파일 한개 더 많들 필요가 없어보여 그냥 추가
+        /*
+        *밤송이 끼리 부딪히면은 카운트 (이미 카운트를 했으면은 카운트 x 밤송이 컨트롤러 스크립트에서 제어)
+        */
         private int bamsongiWithTheSameCount = 0;
 
         private void Awake() {

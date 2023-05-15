@@ -10,6 +10,10 @@ namespace ScoreManagerNamespace{
         private int score = 0;
         private Text scoreText;
 
+        private int missTargetCount = 0;
+        //잠시 테스트를 위한 변수
+        private int one, two, three, four, five, six, seven, eight, nine = 0;
+
         private void Awake() {
             if (Instance == null)
                 Instance = this;
@@ -32,12 +36,36 @@ namespace ScoreManagerNamespace{
             return score;
         }
 
+        public int GetMissTargetCount(){
+            return missTargetCount;
+        }
+
+        public int GetOne() {
+            return one;
+        }
+
+        public int GetTwo() {
+            return two;
+        }
+
         // 점수를 더하는 메서드
         public void AddScore(int add){
             score += add;
             if(score >= 0){
                 scoreText.text = "점수: " + score.ToString() + "점";
             }
+        }
+
+        public void AddOne(){
+            one++;
+        }
+
+        public void AddTwo(){
+            two++;
+        }
+
+        public void AddMissTarget(){
+            missTargetCount++;
         }
 
         // 점수를 빼는 메서드

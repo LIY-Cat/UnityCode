@@ -30,7 +30,9 @@ public class BamsongiGenerator : MonoBehaviour{
     private int? random_option = null; //int?는 null할당 위함, 0으로 초기화해서 0번 옵션이 발생하는 예외상황 방지용
 
     void Update(){
-        if (/*Input.GetMouseButtonDown(0)*/Input.GetMouseButton(0) && Time.time - lastShootTime >= shootDelay) {
+        if (/*Input.GetMouseButtonDown(0)*/
+         Input.GetMouseButton(0) && Time.time - lastShootTime >= shootDelay
+          /*true*/) {
             lastShootTime = Time.time;
             GameObject bamsongi = Instantiate(bamsongiPrefab);
 
@@ -110,15 +112,16 @@ public class BamsongiGenerator : MonoBehaviour{
 
             Debug.Log("<color=orange>totalNumberOfThrows : </color>" + totalNumberOfThrows
              + "\n<color=orange> totalMissCount : </color>" + totalMissCount
-              + "\n<color=orange>BamsongiWithTheSameCount : </color>" + Randomxyznamespace.Randomxyz.Instance.GetBamsongiWithTheSameCount());
+              + " <color=orange>BamsongiWithTheSameCount : </color>" + Randomxyznamespace.Randomxyz.Instance.GetBamsongiWithTheSameCount());
             Debug.Log("<color=orange>After worldDir : </color>" + worldDir + "\n<color=orange> worldDir.normalized : </color>" + worldDir.normalized);
 
-            float randomForce = Random.Range(FORCE_MIN, FORCE_MAX); // 던지는 파워 2500 이상이 면은 과녁을 뚫는 다.
+            float randomForce = Random.Range(FORCE_MIN, FORCE_MAX); // 던지는 파워, 2500 이상이 면은 과녁을 뚫는 다.
             Randomxyznamespace.Randomxyz.Instance.SetRandomForce(randomForce);
             Debug.Log("<color=orange>randomForce : </color>" + randomForce);
             Debug.Log("<color=orange>worldDir.normalized*randomForce : </color>" + worldDir.normalized * randomForce);
 
-            bamsongi.GetComponent<BamsongiControllerNamespace.BamsongiController>().Shoot(worldDir.normalized * randomForce);
+            //bamsongi.GetComponent<BamsongiControllerNamespace.BamsongiController>().Shoot(worldDir.normalized * randomForce);
+            bamsongi.GetComponent<BamsongiControllerNamespace.BamsongiController>().Shoot(new Vector3(0, 200, 2000));//테스트
         }
     }
 }
