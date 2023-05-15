@@ -121,7 +121,7 @@ MonoBehaviour:
   m_MinSize: {x: 910, y: 442}
   m_MaxSize: {x: 22005, y: 10021}
   vertical: 0
-  controlID: 146
+  controlID: 17
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_MinSize: {x: 201, y: 442}
   m_MaxSize: {x: 4001, y: 8042}
   vertical: 1
-  controlID: 147
+  controlID: 26
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_MinSize: {x: 202, y: 321}
   m_MaxSize: {x: 4002, y: 8021}
   vertical: 1
-  controlID: 16
+  controlID: 73
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -402,9 +402,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 0.9329334, y: 8.455718, z: 5.012249}
+    m_Target: {x: 43.917164, y: 2.3241267, z: -49.1656}
     speed: 2
-    m_Value: {x: 0.9329334, y: 8.455718, z: 5.012249}
+    m_Value: {x: 43.917164, y: 2.3241267, z: -49.1656}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -451,13 +451,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.18594018, y: -0.088920176, z: 0.01697908, w: 0.9784152}
+    m_Target: {x: -0.038286477, y: 0.34361193, z: -0.014099234, w: -0.9382618}
     speed: 2
-    m_Value: {x: 0.18593413, y: -0.088917285, z: 0.016978526, w: 0.97838336}
+    m_Value: {x: -0.03828516, y: 0.3436001, z: -0.014098748, w: -0.9382295}
   m_Size:
-    m_Target: -0.034136534
+    m_Target: 0.034136534
     speed: 2
-    m_Value: -0.034136534
+    m_Value: 0.034136534
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -599,23 +599,23 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 56fbffff
+      m_SelectedIDs: d4520000
+      m_LastClickedID: 21204
+      m_ExpandedIDs: 56fbffff0053000006530000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: BamsongiPrefab(Clone)
-        m_OriginalName: BamsongiPrefab(Clone)
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: -183960
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 10}
       m_SearchString: 
@@ -701,9 +701,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: e6530000
-    m_LastClickedID: 21478
-    m_ExpandedIDs: 00000000de53000000ca9a3b
+    m_SelectedIDs: ea530000
+    m_LastClickedID: 21482
+    m_ExpandedIDs: 00000000dc53000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -731,7 +731,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000de530000
+    m_ExpandedIDs: 00000000dc530000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -787,3 +787,28 @@ MonoBehaviour:
     m_GridSize: 64
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 110
+--- !u!114 &20
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12059, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEditor.CoreModule:UnityEditor.Experimental.TerrainAPI:PaintTextureTool
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Failed to load
+    m_Image: {fileID: 0}
+    m_Tooltip: 
+  m_Pos:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 320
+    height: 550
+  m_ViewDataDictionary: {fileID: 0}

@@ -31,8 +31,9 @@ public class BamsongiGenerator : MonoBehaviour{
 
     void Update(){
         if (/*Input.GetMouseButtonDown(0)*/
-         Input.GetMouseButton(0) && Time.time - lastShootTime >= shootDelay
-          /*true*/) {
+         /*Input.GetMouseButton(0) && Time.time - lastShootTime >= shootDelay*/
+          /*true*/ 
+          true && Time.time - lastShootTime >= shootDelay) {
             lastShootTime = Time.time;
             GameObject bamsongi = Instantiate(bamsongiPrefab);
 
@@ -65,17 +66,20 @@ public class BamsongiGenerator : MonoBehaviour{
                     case 3:
                         worldDir.z = Random.Range(0.7f, 1.0f);
                         worldDir.x = Random.Range(-2.0f, 2.0f);
-                        Debug.Log("<color=orange>worldDir.z :</color>" + worldDir.z + "\n<color=orange> worldDir.x :</color>" + worldDir.x);
+                        Debug.Log("<color=orange>worldDir.z :</color>" + worldDir.z
+                         + "\n<color=orange> worldDir.x :</color>" + worldDir.x);
                         break;
                     case 4:
                         worldDir.z = Random.Range(0.7f, 1.0f);
                         worldDir.y = Random.Range(-0.2f, 0.2f);
-                        Debug.Log("<color=orange>worldDir.z :</color>" + worldDir.z + "\n<color=orange> worldDir.y :</color>" + worldDir.y);
+                        Debug.Log("<color=orange>worldDir.z :</color>" + worldDir.z
+                         + "\n<color=orange> worldDir.y :</color>" + worldDir.y);
                         break;
                     case 5:
                         worldDir.x = Random.Range(-2.0f, 2.0f);
                         worldDir.y = Random.Range(-0.2f, 0.2f);
-                        Debug.Log("<color=orange>worldDir.x :</color>" + worldDir.z + "\n<color=orange> worldDir.y :</color>" + worldDir.y);
+                        Debug.Log("<color=orange>worldDir.x :</color>" + worldDir.z
+                         + "\n<color=orange> worldDir.y :</color>" + worldDir.y);
                         break;
                     default:
                         Debug.Log("<color=red>random_option value Error</color>");
@@ -111,8 +115,7 @@ public class BamsongiGenerator : MonoBehaviour{
             Randomxyznamespace.Randomxyz.Instance.SetRandomZ(worldDir.z);
 
             Debug.Log("<color=orange>totalNumberOfThrows : </color>" + totalNumberOfThrows
-             + "\n<color=orange> totalMissCount : </color>" + totalMissCount
-              + " <color=orange>BamsongiWithTheSameCount : </color>" + Randomxyznamespace.Randomxyz.Instance.GetBamsongiWithTheSameCount());
+             + "\n<color=orange> totalMissCount : </color>" + totalMissCount);
             Debug.Log("<color=orange>After worldDir : </color>" + worldDir + "\n<color=orange> worldDir.normalized : </color>" + worldDir.normalized);
 
             float randomForce = Random.Range(FORCE_MIN, FORCE_MAX); // 던지는 파워, 2500 이상이 면은 과녁을 뚫는 다.
@@ -120,8 +123,8 @@ public class BamsongiGenerator : MonoBehaviour{
             Debug.Log("<color=orange>randomForce : </color>" + randomForce);
             Debug.Log("<color=orange>worldDir.normalized*randomForce : </color>" + worldDir.normalized * randomForce);
 
-            //bamsongi.GetComponent<BamsongiControllerNamespace.BamsongiController>().Shoot(worldDir.normalized * randomForce);
-            bamsongi.GetComponent<BamsongiControllerNamespace.BamsongiController>().Shoot(new Vector3(0, 200, 2000));//테스트
+            bamsongi.GetComponent<BamsongiControllerNamespace.BamsongiController>().Shoot(worldDir.normalized * randomForce);
+            //bamsongi.GetComponent<BamsongiControllerNamespace.BamsongiController>().Shoot(new Vector3(0, 200, 2000));//테스트
         }
     }
 }

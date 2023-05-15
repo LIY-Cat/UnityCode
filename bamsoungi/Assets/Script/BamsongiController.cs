@@ -77,10 +77,12 @@ namespace BamsongiControllerNamespace {
         private void HandleNonBamsongiCollision(Collision other) {
     	    if(collisionCheck) return; // 이미 충돌 처리된 경우
 
-            if (other.gameObject.CompareTag(TAR_TAG_NAME)) {//타겟에 닿으면 바로 떨어지기 안됨 분석 더 필요
+            //타겟에 닿으면 바로 떨어지기 안됨 분석 더 필요
+            //! 문제점은 ShootSetBamsongi 메소드 설명 참고
+            /*if (other.gameObject.CompareTag(TAR_TAG_NAME)) {
                 thisrigidbody.velocity = Vector3.down * 2000;
                 StartCoroutine(SystemDelay());
-            }
+            }*/
 
             DisabledOnCollisionEnter();
     	    thisparticleSystem.Play();
@@ -98,7 +100,7 @@ namespace BamsongiControllerNamespace {
             //thisparticleSystem.Play();
         }
 
-        IEnumerator SystemDelay(){yield return new WaitForSeconds(SYSTEM_DELAY);}
+        //IEnumerator SystemDelay(){yield return new WaitForSeconds(SYSTEM_DELAY);}
 
         // 이 밤송이를 처리 후 대기 상태로 만드는 코루틴
         IEnumerator PostCollisionDelayProcess(float delay){
@@ -136,6 +138,10 @@ namespace BamsongiControllerNamespace {
             //Invoke("ObjectDestroy", 5f);
         }
 
+        /*
+        ! 문제점: AddForce에 간단한 값을 넣으면은 재대로 작동이 안돼는 문제를 지니고 있다.
+        TODO: 추후에 문제점을 원활하게 해결 할것.
+        */
         private void ShootSetBamsongi(string option){
             if(option == "backward"){// 던져진 밤송이를 뒤로 돌아오게 만든다.
                 Shoot(new Vector3(
@@ -192,6 +198,9 @@ namespace BamsongiControllerNamespace {
         }
 
         // 이 밤송이를 파괴하는 메소드
+        /*
+        TODO: 맵밖으로 탈출하면은 제거 구현
+        */
         private void ObjectDestroy() {
                 Destroy(thisrigidbody.gameObject);
         }
