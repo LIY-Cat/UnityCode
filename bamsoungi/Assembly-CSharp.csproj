@@ -40,6 +40,10 @@
      <Compile Include="Assets\Script\Randomxyz.cs" />
      <Compile Include="Assets\Script\BamsongiGenerator.cs" />
      <Compile Include="Assets\Script\ScoreManager.cs" />
+     <Compile Include="Assets\Script\BasketController.cs" />
+     <Compile Include="Assets\Script\BasketPosition.cs" />
+     <Compile Include="Assets\Script\BamSongiPosition.cs" />
+     <None Include="Assets\ShootingSound\ReadMe.txt" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.1.23f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BamsongiTag
   - targetTag
+  - basketTag
   layers:
   - Default
   - TransparentFX

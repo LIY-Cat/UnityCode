@@ -10,6 +10,7 @@ namespace BamsongiControllerNamespace {
         private object lockObject = new object();
         // 코루틴 중복 실행 방지용 플래그
         private Coroutine postCollisionDelayProcessCoroutine = null;
+        private Coroutine postBamsongiDelayProcessCoroutine = null;
 
         //시스템 잠시 딜레이
         private const float SYSTEM_DELAY = 1.0f;
@@ -24,10 +25,13 @@ namespace BamsongiControllerNamespace {
         private const float DESTROY_DELAY = 5f;
 
         private const string BAM_TAG_NAME = "BamsongiTag";
-        private const string TAR_TAG_NAME = "targetTag";   
+        private const string TAR_TAG_NAME = "targetTag";
+        private const string BAS_TAG_NAME = "basketTag";
+        private bool handleBasketCollider = false;
 
         // 이 밤송이가 충돌을 처리했는지 여부, 없으면 중복 실행
-        private bool collisionCheck = false;
+        private bool collisionCheckTar = false;
+        private bool collisionCheckOther = false;
         // 오브젝트 파괴 여부
         private bool destructionCheck = false;
         // 점수를 추가해야 하는지 여부, 없으면 여러번 올라감
@@ -41,6 +45,8 @@ namespace BamsongiControllerNamespace {
         private Collider thisCollider;
         // 이 밤송이의 ParticleSystem 컴포넌트
         private ParticleSystem thisparticleSystem;
+        //밤송이 위치
+        private Vector3 bamsongiPos;
 
         // Awake에서 필요한 컴포넌트를 검색하고 할당합니다.
         void Awake(){
@@ -52,6 +58,9 @@ namespace BamsongiControllerNamespace {
 
             thisparticleSystem = GetComponent<ParticleSystem>();
             Debug.Assert(thisparticleSystem != null, "ParticleSystem가 null값입니다.");
+
+            bamsongiPos = BasketPositionNameSpace.BasketPosition.Instance.GetPositionAll();
+            bamsongiPos.y += 4.0f;
         }
 
         /*
@@ -61,11 +70,24 @@ namespace BamsongiControllerNamespace {
         */
         // 충돌 이벤트 처리 메소드
         void OnCollisionEnter(Collision other){
-            if(!other.gameObject.CompareTag(BAM_TAG_NAME)){
+            if(other.gameObject.CompareTag(TAR_TAG_NAME)){
                 HandleNonBamsongiCollision(other);
             }else if(other.gameObject.CompareTag(BAM_TAG_NAME)){
                 HandleBamsongiCollision(other);
+            }else if(!other.gameObject.CompareTag(TAR_TAG_NAME) && !other.gameObject.CompareTag(BAM_TAG_NAME)){
+                Test();
             }else{Debug.LogError("콜라이더 충돌에 문제가 있습니다.");}
+        }
+
+        IEnumerator OnTriggerEnter(Collider other){
+            if(other.gameObject.CompareTag(BAS_TAG_NAME) && handleBasketCollider){
+                DisabledOnCollisionEnter();
+                //안하면은 남아있는 버그가 있음 바구니 하기전에도
+                yield return new WaitForSeconds(51.0f);
+                if(destructionCheck){
+                    ObjectDestroy();
+                }
+            }
         }
 
         // 밤송이를 특정 방향으로 발사합니다.
@@ -75,7 +97,9 @@ namespace BamsongiControllerNamespace {
 
         // 밤송이가 다른 밤송이가 아닌 물체와 충돌했을 때의 처리 메소드
         private void HandleNonBamsongiCollision(Collision other) {
-    	    if(collisionCheck) return; // 이미 충돌 처리된 경우
+    	    if(collisionCheckTar) return; // 이미 충돌 처리된 경우
+            StopPostBamsongiDelayProcessCoroutine();
+            if(handleBasketCollider)handleBasketCollider = false;
 
             //타겟에 닿으면 바로 떨어지기 안됨 분석 더 필요
             //! 문제점은 ShootSetBamsongi 메소드 설명 참고
@@ -90,14 +114,52 @@ namespace BamsongiControllerNamespace {
             
             StartPostCollisionDelayProcessCoroutine();
 
-            destructionCheck = true;//파괴 여부
-            collisionCheck = true;// 충돌처리 완료
+            if(!destructionCheck) destructionCheck = true;//파괴 여부
+            collisionCheckTar = true;// 충돌처리 완료
         }
 
         // 밤송이가 다른 밤송이와 충돌했을 때의 처리 메소드
         private void HandleBamsongiCollision(Collision other) {
-            destructionCheck = false;//파괴 여부
+            StopPostCollisionDelayProcessCoroutine();
+            if(handleBasketCollider)handleBasketCollider = false;
+            //ActivateOnCollisionEnter();
+            StartPostBamsongiDelayProcessCoroutine();
+            if(destructionCheck) destructionCheck = false;//파괴 여부
+
+            /*
+            ! 밤송이 끼리 부딪히면은 점수 누락하게 만들었는 데 점수가 전체적으로 안올라는 문제가 발생한다.
+            TODO: 추후에 문제없게 구현하기
+            */
+            //if(!isScoreAdded)isScoreAdded = true;
+
             //thisparticleSystem.Play();
+        }
+
+        private void Test(){
+            if(collisionCheckOther) return;
+            StopPostBamsongiDelayProcessCoroutine();
+            if(handleBasketCollider)handleBasketCollider = false;
+
+            DisabledOnCollisionEnter();
+            if(!isScoreAdded) isScoreAdded = true;
+
+            StartPostCollisionDelayProcessCoroutine();
+
+            if(!destructionCheck)destructionCheck = true;//파괴 여부
+            collisionCheckOther = true;
+        }
+
+        private void HandleBasketCollider(){
+            if(thisrigidbody.isKinematic)
+                thisrigidbody.isKinematic = false;
+            if(!thisCollider.isTrigger)
+                thisCollider.isTrigger = true;
+
+            lock (lockObject){
+                handleBasketCollider = true;
+                thisrigidbody.velocity = Vector3.zero;//AddForce 때문에 힘을 없애 줘야 한다.
+                transform.position = bamsongiPos;
+            }
         }
 
         //IEnumerator SystemDelay(){yield return new WaitForSeconds(SYSTEM_DELAY);}
@@ -115,13 +177,43 @@ namespace BamsongiControllerNamespace {
             yield return new WaitForSeconds(delay);
             try{
                 lock (lockObject) {
+                    HandleBasketCollider();
+                }
+            }catch(System.Exception e){Debug.LogException(e);
+            }finally{postCollisionDelayProcessCoroutine = null;}
+
+            yield return new WaitForSeconds(delay);
+            try{
+                lock (lockObject) {
                     if(destructionCheck){ObjectDestroy();}
                     else{destructionCheck = true;}
                 }
             }catch(System.Exception e){Debug.LogException(e);
             }finally{postCollisionDelayProcessCoroutine = null;}
-            
+
             postCollisionDelayProcessCoroutine = null;
+        }
+
+        //밤송이끼리 부딛힌후 굴러만 갈때 파괴 안돼는 문제 수정
+        IEnumerator PostBamsongiDelayProcess(float delay){
+            yield return new WaitForSeconds(delay);
+            try{
+                lock (lockObject) {
+                    HandleBasketCollider();
+                }
+            }catch(System.Exception e){Debug.LogException(e);
+            }finally{postBamsongiDelayProcessCoroutine = null;}
+
+            yield return new WaitForSeconds(delay);
+            try{
+                lock (lockObject) {
+                    if(destructionCheck){ObjectDestroy();}
+                    else{destructionCheck = true;}
+                }
+            }catch(System.Exception e){Debug.LogException(e);
+            }finally{postBamsongiDelayProcessCoroutine = null;}
+
+            postBamsongiDelayProcessCoroutine = null;
         }
 
         // 되돌아오는 코루틴, 다른 방향으로 다시 발사하는 코루틴
@@ -132,9 +224,11 @@ namespace BamsongiControllerNamespace {
             }else{
                 ShootSetBamsongi("random");
             }
+            thisCollider.isTrigger = true;//이거 안하면 가끔 중간에 멈추어 있다.
             //안 기달려 주면은 바로 찰싹 붙는 다.
             yield return new WaitForSeconds(RESET_DELAY);
-            lock (lockObject) {collisionCheck = false;}
+            /*lock (lockObject) {collisionCheckOther = false;}*/
+
             //Invoke("ObjectDestroy", 5f);
         }
 
@@ -165,13 +259,17 @@ namespace BamsongiControllerNamespace {
 
         //유의점: 변경시 바로 적용이 된다.
         private void ActivateOnCollisionEnter(){
-            thisrigidbody.isKinematic = false;
-            thisCollider.isTrigger = false;
+            if(thisrigidbody.isKinematic)
+                thisrigidbody.isKinematic = false;
+            if(thisCollider.isTrigger)
+                thisCollider.isTrigger = false;
         }
 
         private void DisabledOnCollisionEnter(){
-            thisrigidbody.isKinematic = true;
-            thisCollider.isTrigger = true;
+            if(!thisrigidbody.isKinematic)
+                thisrigidbody.isKinematic = true;
+            if(!thisCollider.isTrigger)
+                thisCollider.isTrigger = true;
         }
 
         private void AddScore(Collision other){
@@ -194,6 +292,20 @@ namespace BamsongiControllerNamespace {
             if(postCollisionDelayProcessCoroutine != null){
                 StopCoroutine(postCollisionDelayProcessCoroutine);
                 postCollisionDelayProcessCoroutine = null;
+            }
+        }
+
+        private void StartPostBamsongiDelayProcessCoroutine(){
+            if(postBamsongiDelayProcessCoroutine == null){
+                postBamsongiDelayProcessCoroutine = StartCoroutine(PostBamsongiDelayProcess(DESTROY_DELAY));
+            }
+        }
+
+        // 코루틴 중지 메소드
+        private void StopPostBamsongiDelayProcessCoroutine(){
+            if(postBamsongiDelayProcessCoroutine != null){
+                StopCoroutine(postBamsongiDelayProcessCoroutine);
+                postBamsongiDelayProcessCoroutine = null;
             }
         }
 

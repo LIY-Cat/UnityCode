@@ -7,7 +7,7 @@ public class BamsongiGenerator : MonoBehaviour{
     
     //랜덤값 상수
     private const int RANDOM_OPTION_MIN = 0;
-    private const int RANDOM_OPTION_MAX = 5;
+    private const int RANDOM_OPTION_MAX = 6;
     private const float FORCE_MIN = 1000.0f;
     private const float FORCE_MAX = 3000.0f;
 
@@ -32,8 +32,9 @@ public class BamsongiGenerator : MonoBehaviour{
     void Update(){
         if (/*Input.GetMouseButtonDown(0)*/
          /*Input.GetMouseButton(0) && Time.time - lastShootTime >= shootDelay*/
+         Input.GetMouseButton(0)
           /*true*/ 
-          true && Time.time - lastShootTime >= shootDelay) {
+          /*true && Time.time - lastShootTime >= shootDelay*/) {
             lastShootTime = Time.time;
             GameObject bamsongi = Instantiate(bamsongiPrefab);
 
