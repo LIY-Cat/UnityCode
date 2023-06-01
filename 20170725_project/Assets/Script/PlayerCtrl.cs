@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class PlayerCtrl : MonoBehaviour{
     /*
@@ -18,9 +19,10 @@ public class PlayerCtrl : MonoBehaviour{
     TODO: 분석해서 코드 최적화
     */
         private Rigidbody playerRigidbody;
+        NavMeshAgent navMesh;
         [SerializeField] private float jumpForce = 250.0f;
         [SerializeField] private float walkForce = 5.0f;
-        [SerializeField] private GameObject scoreObject, gaugeObject, scrollbarObject;
+        [SerializeField] private GameObject scoreObject, gaugeObject, scrollbarObject, dest;
         private int score = 0;
         private Text scoreText;
         private AudioSource audioSource;
@@ -39,6 +41,11 @@ public class PlayerCtrl : MonoBehaviour{
     }
     void Start(){
         playerRigidbody = GetComponent<Rigidbody>();
+        navMesh = GetComponent<NavMeshAgent>();
+        dest = GameObject.Find("Destination");
+
+        navMesh.destination = dest.transform.position;
+
         scoreObject = GameObject.Find("Score");
         audioSource = GetComponent<AudioSource>();
         scoreText = scoreObject.GetComponent<Text>();
@@ -48,6 +55,8 @@ public class PlayerCtrl : MonoBehaviour{
         playerRigidbody.AddForce(temp.normalized * 0.1f);
         MeasureDistance("item");
         */
+
+
 
         gaugeObject = GameObject.Find("Gauge");
         scrollbarObject = GameObject.Find("Scrollbar");
